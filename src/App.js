@@ -1,45 +1,31 @@
-import './App.css';
-import { useSelector, useDispatch, connect } from 'react-redux'
-import { clearData, fetchData, incrementId, decrementId, inputId } from './features/dataSlice'
-import { useEffect } from 'react';
+import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
+import { darkMode, lightMode } from "./features/modeSlice";
+import Nav from "./components/Nav";
+import ContentWrapper from "./components/ContentWrapper";
+import Footer from "./components/Footer";
 
-function App(props) {
-  const dispatch = useDispatch()
-  const data = useSelector((state) => state.data)
+function App() {
+  const dispatch = useDispatch();
+  const mode = useSelector((state) => state.mode);
 
-  const renderImg = () => {
-    if(data.apiData) {
-      return <img style={{'width': '100vw'}} src={data.apiData.primaryImage} alt={data.apiData.title} />
-    } else {
-      return <p>image here</p>
-    }
-  }
-
-  useEffect(() => {
-    dispatch(fetchData())
-  }, [props.objectId, dispatch])
-
+  const toggleMode = () => {
+    mode.darkMode ? dispatch(lightMode()) : dispatch(darkMode());
+  };
 
   return (
-    <div className="App">
-      <div>
-        <button onClick={() => dispatch(fetchData())}>Thunk!</button>
-        <button onClick={() => dispatch(clearData())}>Clear</button>
-        <button onClick={() => dispatch(incrementId())}>Next</button>
-        <button onClick={() => dispatch(decrementId())}>Back</button>
-      </div>
-      <input value={ data.objectId } onChange={(e) => {
-        dispatch(inputId(Number(e.target.value)))
-      }} />
-      <div>
-        {data.objectId}
-        {renderImg()}
-      </div>
+    <div
+      style={{ backgroundColor: mode.color1, color: "white" }}
+      className="App"
+    >
+      <Nav />
+      <button onClick={toggleMode}>
+        {mode.darkMode ? "Light Mode" : "Dark Mode"}
+      </button>
+      <ContentWrapper />
+      <Footer />
     </div>
   );
 }
 
-
-const mapStateToProps = (state, ownProps) => ({ objectId: state.data.objectId })
-
-export default connect(mapStateToProps)(App);
+export default App;
