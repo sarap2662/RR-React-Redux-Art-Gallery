@@ -1,8 +1,9 @@
+import React from "react";
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 import { darkMode, lightMode } from "./features/modeSlice";
 import Nav from "./components/Nav";
-import ContentWrapper from "./components/ContentWrapper";
+import ContentWrapper from "./components/ConetnentWrapper";
 import Footer from "./components/Footer";
 
 function App() {
